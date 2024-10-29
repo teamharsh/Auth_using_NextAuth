@@ -12,7 +12,7 @@ export const NEXT_AUTH_CONFIG = {
       },
       async authorize(credentials: any) {
         return {
-          id: "user1",
+          id: "1",
           name: "Harsh Kumar",
           userId: "userharsh",
           email: "harsh@gmail.com",
@@ -31,19 +31,20 @@ export const NEXT_AUTH_CONFIG = {
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     jwt: async ({ user, token }: any) => {
-      if (user) {
-        token.uid = user.id;
-      }
+      token.userId = token.sub;
+      console.log(token);
       return token;
     },
     session: ({ session, token, user }: any) => {
       if (session.user) {
-        session.user.id = token.uid;
+        session.user.id = token.userId;
       }
+      console.log(session);
+
       return session;
     },
   },
   pages: {
-      signIn: '/signin',
-  }
+    signIn: "/signin",
+  },
 };
